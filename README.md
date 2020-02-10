@@ -1,5 +1,6 @@
-# cmsadmin
+# zhiyigoblog后端管理页面
 
+基于zhiyigocms开发的后端管理页面
 ## Project setup
 ```
 npm install
