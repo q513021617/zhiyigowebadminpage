@@ -127,13 +127,13 @@ padding: 20px 50px;
        
        data=data.data;
        console.log(data);
-       if( data != undefined && data != "" &&data.id==205){
+       if( data != undefined && data != ""){
         _this.setCookie("userdata",data.id);
            location.href="/";
            return;
        }
 
-       if(!(data != undefined && data != "" &&data.id==205)){
+       if(!(data != undefined && data != "")){
           
            $('#erro').html("用户名或者密码错误");
            return;
