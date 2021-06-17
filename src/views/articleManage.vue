@@ -360,7 +360,6 @@ export default {
 
       console.log(articleData);
       if (_this.updateDataType == "add") {
-        articleData.append("id", null);
         httpmethods.addDataFuc(
           articleData,
           "/blogapi/admin/aricle/",
@@ -385,9 +384,9 @@ export default {
       }
     },
     addArticle: function () {
-      _this.updateDataType = "add";
+      this.updateDataType = "add";
       this.article={};
-      _this.showArticle = true;
+      this.showArticle = true;
     },
   },
   created: function () {
