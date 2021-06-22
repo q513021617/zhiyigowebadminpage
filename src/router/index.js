@@ -11,6 +11,7 @@ import seomanage from '@/views/seomanage.vue'
 import photomanage from '@/views/photomanage.vue'
 // 
 import menumanager from '@/views/menumanager.vue'
+import musicManager from '@/views/musicManager.vue'
 import booklist from '@/views/booklist.vue'
 Vue.use(VueRouter)
 
@@ -58,6 +59,10 @@ const routes = [
     path: '/booklist',
     name: 'booklist',
     component: booklist
+  },{
+    path: '/musicManager',
+    name: 'musicManager',
+    component: musicManager
   }
 ]
 

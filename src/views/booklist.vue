@@ -2,25 +2,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" id="usermanager">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">本站数据</h1>
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">首页</a></li>
-              <li class="breadcrumb-item active">书籍管理</li>
-            </ol>
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </div>
+    <pageHeader title="书籍管理"></pageHeader>
     <!-- /.content-header -->
 
     <!-- Main content -->
@@ -72,7 +54,7 @@
 
             <el-pagination
               :page-size="20"
-              :pager-count="11"
+              :pager-count="pagesize"
               layout="prev, pager, next"
               :total="tatolpage"
               :current-change="queryAllBooksBypage"
@@ -118,9 +100,11 @@
 <script>
 import httpmethods from "@/tools/http";
 import Infomodal from "@/components/infomodal.vue";
+import pageHeader from "@/components/pageHeader.vue";
 import Vue from "vue";
 import ToastsContainerTopRight from "@/components/toastsContainerTopRight.vue";
 import Pagehelper from "@/components/pagehelper.vue";
+
 import { uploadQinuImage } from "@/api/aricle";
 import { queryBookDetail, queryBookList, saveBook, delBook } from "@/api/book";
 export default {
@@ -138,7 +122,7 @@ export default {
  
       showBook: false,
       updateDataType: "",
-      pagesize: 5,
+      pagesize: 20,
       tatolpage: 5,
       curpage: 1,
     };
@@ -227,6 +211,7 @@ export default {
     Infomodal,
     ToastsContainerTopRight,
     Pagehelper,
+    pageHeader
   },
 };
 </script>
