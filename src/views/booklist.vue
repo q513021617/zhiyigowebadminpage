@@ -21,7 +21,7 @@
               data-toggle="modal"
               data-target="#infomodal"
             >
-              新增文章
+              新增书籍
             </button>
             <!-- /.card-header -->
             <el-table :data="booklist" style="width: 100%">

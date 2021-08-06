@@ -1,164 +1,186 @@
 <template>
   <div class="wrapper">
-
-
-    <div id="commonnav" th:replace="admin/adminnav :: adminnav"  >
-
-    </div>
+    <div id="commonnav" th:replace="admin/adminnav :: adminnav"></div>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" id="menumanager">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">本站数据</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">首页</a></li>
-                            <li class="breadcrumb-item active">菜单管理</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0 text-dark">本站数据</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">首页</a></li>
+                <li class="breadcrumb-item active">菜单管理</li>
+              </ol>
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
         </div>
-        <!-- /.content-header -->
+        <!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
 
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <!-- Small boxes (Stat box) -->
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{userCount}}</h3>
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>{{ userCount }}</h3>
 
-                                <p>注册人数</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>53</h3>
-
-                                <p>登录人数</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-
-
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-
-                                <p>访问人数</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
+                  <p>注册人数</p>
                 </div>
-                <!-- /.row -->
-                <!-- Main row -->
-                <div class="row">
-                    <div class="card" style="width: 100%;height: auto;">
-                        <div class="card-header">
-                            <h1 class="card-title" style="font-weight: bold;">菜单列表</h1>
-                        </div>
-                        <button @click="addMenu" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >新增菜单</button>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="menulist" class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>菜单名</th>
-                                    <th>菜单链接</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                <tr v-if="menulist.length<=0">
-                                    <td colspan="4">暂时无角色信息</td>
-                                </tr>
-
-                                <tr v-for="item in menulist" v-bind:key="item.id">
-                                    <td>{{item.id}}</td><td>{{item.name}}</td>
-                                    <td>{{item.url}}</td>
-                                    <td>
-
-                                        <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delMenu(item.id)">删除</button>
-                                        <button type="submit" class="btn btn-info" data-toggle="modal"  data-target="#infomodal" @click="queryMenu(item.id)">查看详细信息</button>
-                                    </td>
-
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
                 </div>
+                <a href="#" class="small-box-footer"
+                  >More info <i class="fas fa-arrow-circle-right"></i
+                ></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>53</h3>
 
-            </div><!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+                  <p>登录人数</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer"
+                  >More info <i class="fas fa-arrow-circle-right"></i
+                ></a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3>65</h3>
+
+                  <p>访问人数</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer"
+                  >More info <i class="fas fa-arrow-circle-right"></i
+                ></a>
+              </div>
+            </div>
+            <!-- ./col -->
+          </div>
+          <!-- /.row -->
+          <!-- Main row -->
+          <div class="row">
+            <div class="card" style="width: 100%; height: auto">
+              <div class="card-header">
+                <h1 class="card-title" style="font-weight: bold">菜单列表</h1>
+              </div>
+              <button
+                @click="addMenu"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#infomodal"
+              >
+                新增菜单
+              </button>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="menulist" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>菜单名</th>
+                      <th>菜单链接</th>
+                      <th>操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="menulist.length <= 0">
+                      <td colspan="4">暂时无角色信息</td>
+                    </tr>
+
+                    <tr v-for="item in menulist" v-bind:key="item.id">
+                      <td>{{ item.id }}</td>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.url }}</td>
+                      <td>
+                        <button
+                          type="submit"
+                          class="btn btn-danger"
+                          data-toggle="modal"
+                          data-target="#infomodal"
+                          @click="delMenu(item.id)"
+                        >
+                          删除
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-info"
+                          data-toggle="modal"
+                          data-target="#infomodal"
+                          @click="queryMenu(item.id)"
+                        >
+                          查看详细信息
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">«</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">»</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
-  <Infomodal
-     v-bind:inputtitle="inputtitle"
-     v-bind:isinputlist="isinputlist"
-     v-bind:info="info"
-     v-bind:oktext="oktext"
-     v-on:closeInfoModel="closeInfoModelP"
-     v-on:okmethod="okmethodP"
-     v-bind:infolist="infolist"
-     v-if="showmodel"
-     ></Infomodal>
+    <Infomodal
+      v-bind:inputtitle="inputtitle"
+      v-bind:isinputlist="isinputlist"
+      v-bind:info="info"
+      v-bind:oktext="oktext"
+      v-on:closeInfoModel="closeInfoModelP"
+      v-on:okmethod="okmethodP"
+      v-bind:infolist="infolist"
+      v-if="showmodel"
+    ></Infomodal>
 
-  <ToastsContainerTopRight
-     v-bind:ToastTitle="ToastTitle"
-     v-bind:ToastSubtitle="ToastSubtitle"
-     v-bind:Toasttext="Toasttext"
-     v-if="showtoast"
-     v-on:closeInfoToast="closeInfoToastP"
-     ></ToastsContainerTopRight>
+    <ToastsContainerTopRight
+      v-bind:ToastTitle="ToastTitle"
+      v-bind:ToastSubtitle="ToastSubtitle"
+      v-bind:Toasttext="Toasttext"
+      v-if="showtoast"
+      v-on:closeInfoToast="closeInfoToastP"
+    ></ToastsContainerTopRight>
     <!-- /.control-sidebar -->
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -179,7 +201,7 @@ import httpmethods from '@/tools/http'
 import Infomodal from '@/components/infomodal.vue'
 import Vue from 'vue'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
-
+import {queryMenuList,queryMenuById} from '@/api/menu'
 export default {
   data() {
     return {
@@ -239,14 +261,11 @@ export default {
       closeInfoModelP:function (showmodel) {
         this.showmodel=showmodel;
       },
-             queryAllMenu:function () {
+             queryAllMenu:async function () {
                 var _this=this;
-                $.get("/blogapi/admin/permission/",function (data) {
-
-                    _this.menulist=data;
-                    _this.$forceUpdate();
-
-                });
+               let {data}=await queryMenuList();
+                 _this.menulist=data;
+                _this.$forceUpdate();
             },
             delMenu:function (id) {
                 console.log("删除 "+id);
@@ -268,11 +287,12 @@ export default {
 
 
             },
-            queryMenu: function (id) {
+            queryMenu:async function (id) {
 
                 var _this=this;
-                $.get("/blogapi/admin/permission/"+id,function (data) {
-                    console.log(data);
+               let {data} =await queryMenuById(id);
+
+                  console.log(data);
                     var infolist=[];
 
 
@@ -299,11 +319,8 @@ export default {
                             _this.queryAllMenu();
                              _this.closeInfoModelP();
                         });
-
-
-                    });
-                });
-
+                    })
+            
             },addMenu: function () {
 
                 var infolist=[];
@@ -348,5 +365,4 @@ export default {
 </script>
 
 <style>
-
 </style>

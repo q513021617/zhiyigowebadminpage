@@ -174,7 +174,7 @@
   }
   import httpmethods from '@/tools/http'
 import Infomodal from '@/components/infomodal.vue'
-
+ import {queryAllRole,queryRoleById} from '@/api/role'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
 
 export default {
@@ -237,14 +237,11 @@ export default {
       closeInfoModelP:function (showmodel) {
         this.showmodel=showmodel;
       },
-      queryAllRole:function () {
-        var _this=this;
-    $.get("/blogapi/admin/role/",function (data) {
-
-      _this.rolelist=data;
-      _this.$forceUpdate();
-
-    });
+      queryAllRoleList:async function () {
+        let {data}=await queryAllRole();
+        // debugger
+        this.rolelist=data;
+        this.$forceUpdate();
   },
       delRole:function (id) {
     console.log("删除 "+id);
@@ -258,7 +255,7 @@ export default {
        
             _this.showToastFuc("信息:","","删除角色成功!");
             _this.closeInfoModelP();
-            _this.queryAllRole();
+            _this.queryAllRoleList();
           setTimeout(_this.closeInfoModelP,500);
          });
 
@@ -269,8 +266,8 @@ export default {
   },
       queryRole: function (id) {
 
-        var _this=this;
-    $.get("/blogapi/admin/role/"+id,function (data) {
+       
+       let {data}=queryRoleById();
       console.log(data);
       var infolist=[];
 
@@ -278,7 +275,7 @@ export default {
       infolist.push(new Info("权限名","roleName",data.name));
 
 
-      _this.showinfo("权限信息:",infolist,true,"确定","",function () {
+      this.showinfo("权限信息:",infolist,true,"确定","",function () {
 
           let tempRole=new Role();
         tempRole.id=id;
@@ -292,12 +289,11 @@ export default {
           httpmethods.updateDataFuc(roledata,"/blogapi/admin/role/",function () {
              _this.showToastFuc("提示:","","权限数据更新完毕");
             _this.closeInfoModelP();
-            _this.queryAllRole();
+            _this.queryAllRoleList();
           });
-
-
-      });
-    });
+          })
+    
+    
 
   },addRole: function () {
 
@@ -317,14 +313,14 @@ export default {
 
           httpmethods.addDataFuc(roledata,"/blogapi/admin/role/",function () {
              _this.showToastFuc("信息:","","添加权限成功!");
-            _this.queryAllRole();
+            _this.queryAllRoleList();
             _this.closeInfoModelP();
           });
 
 
         });
   }},created: function () {
-      this.queryAllRole();
+      this.queryAllRoleList();
   },
   components: {
        Infomodal,

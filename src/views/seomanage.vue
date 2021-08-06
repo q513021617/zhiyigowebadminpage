@@ -58,14 +58,14 @@
           
         </div>
 
-        <input  type="text" v-model="title" class="form-control" style="width: 30%;border-style: solid;border-width: medium;border-color: #007bff;"/>
+        <input  type="text" v-model="form.siteName" class="form-control" style="width: 30%;border-style: solid;border-width: medium;border-color: #007bff;"/>
 
         <div class="row">
           <h1>站点描述</h1>
           
         </div>
         <div class="row">
-          <textarea type="text" v-model="description" class="form-control" style="width: 30%;height:auto; border-style:solid;border-width: medium;border-color: #007bff;" ></textarea>
+          <textarea type="text" v-model="form.siteDescription" class="form-control" style="width: 30%;height:auto; border-style:solid;border-width: medium;border-color: #007bff;" ></textarea>
         </div>
       <br>
           <div class="row">
@@ -114,12 +114,16 @@ function SeoInfo(id,title,description) {
 import Infomodal from '@/components/infomodal.vue'
 import Vue from 'vue'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
-
+import {getOneSeoInfo} from '@/api/seo'
 export default {
   data() {
     return {
-     title: 'zhiyi分享',
-      description:"一款博客系统",
+     
+      form:{
+         id:'',
+          title: 'zhiyi分享',
+          description:"一款博客系统"
+      },
          // 模态框数据
          inputtitle:"",
           isinputlist:true,
@@ -170,32 +174,22 @@ export default {
       closeInfoModelP:function (showmodel) {
         this.showmodel=showmodel;
       },
-  queryContent:function () {
+      queryContent:async function () {
           var _this=this;
-        $.get("/blogapi/admin/seoInfo/1",function (data) {
-            _this.title=data.siteName;
-          _this.description=data.siteDescription;
-          console.log(" 查询"+_this.title+" "+_this.description);
-        });
+
+        let {data}=await getOneSeoInfo()
+        debugger
+        this.form=data;
+
       },
 
       updateContent:function () {
         var _this=this;
-        console.log(_this);
-        var seoInfo=new SeoInfo(1,_this.title,_this.description);
-        console.log(" 查询"+_this.title+" "+_this.description);
-        $.ajax({
-          url: "/blogapi/admin/seoInfo/",
-          type: 'PUT',
-          data:seoInfo,
-          success: function(result) {
-            console.log("更新: "+result);
-        
+        console.log(_this);        
+        updateSeoInfo(this.form)
         _this.showToastFuc("信息:","","更新信息成功!");
        
-            _this.queryContent();
-          }
-        });
+        _this.queryContent();
 
       }
   },created: function () {

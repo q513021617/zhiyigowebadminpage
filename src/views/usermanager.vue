@@ -88,7 +88,7 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>用户名</th>
-                  <th style="width:20%">密码</th>
+                  <th style="width:20%">邮箱</th>
                   <th >身份</th>
                   <th style="width:30%">操作</th>
                 </tr>
@@ -100,7 +100,7 @@
                 </tr>
 
                 <tr v-for="item in userlist" v-bind:key="item.id">
-            <td>{{item.id}}</td><td>{{item.username}}</td><td>{{item.password}}</td><td>{{item.role==1?'管理员':'普通用户'}}</td>
+            <td>{{item.id}}</td><td>{{item.username}}</td><td>{{item.email}}</td><td>{{item.role==1?'管理员':'普通用户'}}</td>
                   <td>
                     <button type="submit" class="btn btn-primary" data-toggle="modal"  data-target="#infomodal" >封号</button>
                   <button type="submit" class="btn btn-danger" data-toggle="modal"  data-target="#infomodal" @click="delAccount(item.id)">删除</button>
@@ -173,6 +173,8 @@ import Infomodal from '@/components/infomodal.vue'
 import Vue from 'vue'
 import ToastsContainerTopRight from '@/components/toastsContainerTopRight.vue'
 import Pagehelper from '@/components/pagehelper.vue'
+import {saveUser,queryUserDetail,delUserById} from '@/api/user'
+
 export default {
 
 name: 'usermanager',
@@ -274,21 +276,15 @@ name: 'usermanager',
         userdata.append('id',webUser.id);
         var _this=this;
         _this.isShowMsg=true;
+
         this.showinfo("提示:",[],false,"确定","是否删除该用户信息?",function () {
     
-        $.ajax({
-          url: "/blogapi/admin/webUser/",
-          type: 'DELETE',
-          data:webUser,
-          success: function(result) {
-            console.log("删除: "+result);
-            _this.showToastFuc("信息:","","删除用户成功!");
-            _this.closeInfoModelP();
-            setTimeout(_this.closeInfoModelP,500);
-            _this.queryAllUserBypage(0);
 
-          }
-        });
+        delUserById(webUser);
+        _this.showToastFuc("信息:","","删除用户成功!");
+        _this.closeInfoModelP();
+        setTimeout(_this.closeInfoModelP,500);
+        _this.queryAllUserBypage(0);
 
 
     });
@@ -296,12 +292,11 @@ name: 'usermanager',
 
 
   },
-      queryUser: function (id) {
+      queryUser:async function (id) {
 
         var _this=this;
-    $.get("/blogapi/admin/webUser/"+id,function (data) {
-      console.log(data);
-      var infolist=[];
+      let {data}=await queryUserDetail(id);
+     var infolist=[];
 
 
       infolist.push(new Info("用户名","uername",data.username));
@@ -309,8 +304,7 @@ name: 'usermanager',
       infolist.push(new Info("性别","sex",data.sex));
       infolist.push(new Info("email","email",data.email));
       infolist.push(new Info("角色","role",data.role));
-
-      _this.showinfo("用户信息:",infolist,true,"确定","",function () {
+    _this.showinfo("用户信息:",infolist,true,"确定","",function () {
 
           let tempWebUser=new User();
         tempWebUser.id=id;
@@ -320,25 +314,16 @@ name: 'usermanager',
         tempWebUser.sex=infolist[2].value;
         tempWebUser.email=infolist[3].value;
         tempWebUser.role=infolist[4].value;
-        let userdata = new FormData();
-        userdata.append('id',tempWebUser.id);
-        userdata.append('username',tempWebUser.username);
-        userdata.append('password',tempWebUser.password);
-        userdata.append('sex',tempWebUser.sex);
-        userdata.append('email',tempWebUser.email);
-        userdata.append('role',tempWebUser.role);
           console.log(userdata);
-          httpmethods.updateDataFuc(userdata,"/blogapi/admin/webUser/",function () {
-            _this.showToastFuc("提示:","","用户数据更新完毕");
+          saveUser(tempWebUser);
+          _this.showToastFuc("提示:","","用户数据更新完毕");
             _this.closeInfoModelP();
             _this.queryAllUserBypage(0);
-          });
 
 
       });
-    });
 
-  },addUser: function () {
+  },addUser:async function () {
 
         var infolist=[];
 
@@ -352,36 +337,18 @@ name: 'usermanager',
           console.log(infolist);
 
           var tempWebUser=new User();
-
           tempWebUser.username=infolist[0].value;
           tempWebUser.password=infolist[1].value;
           tempWebUser.sex=infolist[2].value;
           tempWebUser.email=infolist[3].value;
           tempWebUser.role=infolist[4].value;
-
-          let userdata = new FormData();
-          userdata.append('username',tempWebUser.username);
-          userdata.append('password',tempWebUser.password);
-          userdata.append('sex',tempWebUser.sex);
-          userdata.append('email',tempWebUser.email);
-          userdata.append('role',tempWebUser.role);
-          console.log(tempWebUser);
-
-          httpmethods.addDataFuc(userdata,"/blogapi/admin/webUser/",function () {
-            // 
-            _this.showToastFuc("信息:","","添加用户成功!");
-            _this.queryAllUserBypage(0);
-            
-            _this.closeInfoModelP();
-          });
-
+          saveUser(tempWebUser);
+          _this.showToastFuc("信息:","","添加用户成功!");
+          _this.queryAllUserBypage(0);            
+          _this.closeInfoModelP();
+ 
 
         });
-
-
-
-
-
     }
     },created: function () {
        this.queryAllUserBypage(0);
