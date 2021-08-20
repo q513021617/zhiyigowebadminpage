@@ -58,7 +58,7 @@ export default {
       username: "",
       password: "",
       userNum: "",
-      isqrcode: true,
+      isqrcode: false,
       text: "/api/user/loginByToken", // 二维码内容
       size: 230, // 二维码宽高尺寸, 长宽一致, 包含外边距
       bgSrc: "", // 嵌入背景图地址，

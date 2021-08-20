@@ -154,7 +154,10 @@
     </section>
     <!-- /.content -->
 
-    <el-dialog title="文章编辑" :visible.sync="showArticle" fullscreen>
+    <el-dialog title="文章编辑" :visible.sync="showArticle" 
+    modal-append-to-body
+    append-to-body
+    fullscreen='false'>
       <el-form ref="form" :model="article" label-width="80px">
         <el-form-item label="文章标题">
           <el-input v-model="article.title"></el-input>
@@ -173,7 +176,7 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="showArticle = false">取 消</el-button>
         <el-button type="primary" @click="saveArticle()">确 定</el-button>
       </span>
     </el-dialog>
@@ -270,7 +273,6 @@ export default {
     },
     showToastFuc: function (ToastTitle, ToastSubtitle, Toasttext) {
       console.log("showToast");
-
       this.ToastTitle = ToastTitle;
       this.ToastSubtitle = ToastSubtitle;
       this.Toasttext = Toasttext;
@@ -322,17 +324,12 @@ export default {
         "确定",
         "是否删除该文章信息?",
         function () {
-          $.ajax({
-            url: "/blogapi/admin/aricle/",
-            type: "DELETE",
-            data: { id: id },
-            success: function (result) {
-              console.log("删除: " + result);
+          httpmethods.axios.delete("/blogapi/admin/aricle/",{data:{id:id}}).then((result)=>{
+            console.log("删除: " + result);
               _this.showToastFuc("信息:", "", "删除文章成功!");
               _this.closeInfoModelP();
               setTimeout(_this.closeInfoModelP, 500);
               _this.queryAllArticleBypage(0);
-            },
           });
         }
       );
@@ -340,28 +337,24 @@ export default {
     queryAricle: function (id) {
       var _this = this;
 
-      $.get("/blogapi/admin/aricle/" + id, function (data) {
+      httpmethods.axios.get("/blogapi/admin/aricle/" + id,"").then((data)=>{
+        data=data.data
         console.log(data);
-
         _this.article.id = data.id;
         _this.article.title = data.title;
         _this.article.articleContent = data.articleContent;
         _this.updateDataType = "update";
         _this.showArticle = true;
+      
       });
     },
 
     saveArticle: function () {
       var _this = this;
-      let articleData = new FormData();
 
-      articleData.append("title", this.article.title);
-      articleData.append("articleContent", this.article.articleContent);
-
-      console.log(articleData);
       if (_this.updateDataType == "add") {
         httpmethods.addDataFuc(
-          articleData,
+          this.article,
           "/blogapi/admin/aricle/",
           function () {
             _this.showToastFuc("提示:", "", "文章数据更新完毕");
@@ -370,10 +363,11 @@ export default {
           }
         );
       }
+
       if (_this.updateDataType == "update") {
-        articleData.append("id", this.article.id);
+        
         httpmethods.updateDataFuc(
-          articleData,
+          this.article,
           "/blogapi/admin/aricle/",
           function () {
             _this.showToastFuc("提示:", "", "文章数据更新完毕");
@@ -382,6 +376,7 @@ export default {
           }
         );
       }
+
     },
     addArticle: function () {
       this.updateDataType = "add";
