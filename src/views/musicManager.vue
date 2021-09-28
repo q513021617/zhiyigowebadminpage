@@ -188,7 +188,7 @@ export default {
       });
     },
 
-    saveMusic: function () {
+    saveMusic:async function () {
       var _this = this;
 
       console.log(this.music);
@@ -196,14 +196,14 @@ export default {
         this.music.id = null;
       }
 
-      saveMusic(this.music).then((res) => {
-        this.$message({
+     let {data}= await saveMusic(this.music);
+      this.$message({
           message: "保存成功",
           type: "success",
         });
+
         this.showMusic = false;
         this.queryAllMusicBypage(0);
-      });
     },
     addMusic: function () {
       this.updateDataType = "add";
